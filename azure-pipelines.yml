@@ -6,7 +6,7 @@
 trigger:
 - master
 
-#test code
+#test code move commit to wkitem
 
 pool:
   vmImage: ubuntu-latest
