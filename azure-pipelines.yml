@@ -9,9 +9,7 @@ trigger:
 #test code move commit to wkitem preo
 
 pool:
-  name:  Azure Pipelines
-   demands:maven
-  # vmImage: ubuntu-latest
+  vmImage: ubuntu-latest
 
   stages:
   - stage: 'Build'
