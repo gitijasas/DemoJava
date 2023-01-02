@@ -1,0 +1,97 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java test
+#test commit
+   
+
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+
+  stages:
+  - stage: 'Build'
+    jobs:
+    - job: 'Build1'
+      steps:
+      - task: ServiceNow-DevOps-Agent-Job-Notification@1
+        inputs:
+          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+          Phase: 'STARTED'
+            
+      # - task: Maven@3
+      #   inputs:
+      #     mavenPomFile: 'pom.xml'
+      #     mavenOptions: '-Xmx3072m'
+      #     javaHomeOption: 'JDKVersion'
+      #     jdkVersionOption: '1.8'
+      #     jdkArchitectureOption: 'x64'
+      #     publishJUnitResults: true
+      #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      #     goals: 'package'
+
+      - task: Maven@3
+        inputs:
+          mavenPomFile: 'pom.xml'
+          mavenOptions: '-Xmx3072m'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          goals: 'package'
+
+      - task: Maven@4
+        displayName: 'Maven pom.xml'
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: |
+            **/target/*.war
+            *.sql
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
+        
+      - task: ServiceNow-DevOps-Agent-Job-Notification@1
+        inputs:
+          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+          Phase: 'COMPLETED'        
+  - stage: 'Test'
+    jobs:
+    - job: 'Test1'
+      steps:
+      - task: ServiceNow-DevOps-Agent-Job-Notification@1
+        inputs:
+          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+          Phase: 'STARTED'
+
+      - task: ServiceNow-DevOps-Agent-Job-Notification@1
+        inputs:
+          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+          Phase: 'COMPLETED'
+
+    - stage: 'Deploy'
+      jobs:
+      - job: 'Deploy1'
+        pool: server 
+        steps:
+        - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+          inputs:
+            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+            Upstreamjob: 'Test'
+# HTML
+# Archive your static HTML project and save it with the build record.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
