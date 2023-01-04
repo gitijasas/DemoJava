@@ -9,9 +9,10 @@ trigger:
 #test code move commit to wkitem preo zoom
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
+  demands: maven
 
-  stages:
+stages:
   - stage: 'Build'
     jobs:
     - job: 'Build1'
@@ -21,58 +22,58 @@ pool:
       #     connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
       #     Phase: 'STARTED'
             
-      - task: Maven@3
-        inputs:
-          mavenPomFile: 'pom.xml'
-          mavenOptions: '-Xmx3072m'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.8'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          goals: 'package'
-
-      # - task: Maven@4
-      #   displayName: 'Maven pom.xml'
-
-      # - task: CopyFiles@2
-      #   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+      # - task: Maven@3
       #   inputs:
-      #     SourceFolder: '$(Build.SourcesDirectory)'
-      #     Contents: |
-      #       **/target/*.war
-      #       *.sql
-      #     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      # - task: PublishBuildArtifacts@1
-      #   displayName: 'Publish Artifact: drop'
+      #     mavenPomFile: 'pom.xml'
+      #     mavenOptions: '-Xmx3072m'
+      #     javaHomeOption: 'JDKVersion'
+      #     jdkVersionOption: '1.8'
+      #     jdkArchitectureOption: 'x64'
+      #     publishJUnitResults: true
+      #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      #     goals: 'package'
+
+      - task: Maven@4
+        displayName: 'Maven pom.xml'
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: |
+            **/target/*.war
+            *.sql
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
         
       # - task: ServiceNow-DevOps-Agent-Job-Notification@1
       #   inputs:
       #     connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
       #     Phase: 'COMPLETED'        
-  # - stage: 'Test'
-  #   jobs:
-  #   - job: 'Test1'
-  #     steps:
-  #     - task: ServiceNow-DevOps-Agent-Job-Notification@1
-  #       inputs:
-  #         connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-  #         Phase: 'STARTED'
+  - stage: 'Test'
+    jobs:
+    - job: 'Test1'
+      steps:
+      - task: ServiceNow-DevOps-Agent-Job-Notification@1
+        inputs:
+          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+          Phase: 'STARTED'
 
-  #     - task: ServiceNow-DevOps-Agent-Job-Notification@1
-  #       inputs:
-  #         connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-  #         Phase: 'COMPLETED'
+      - task: ServiceNow-DevOps-Agent-Job-Notification@1
+        inputs:
+          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+          Phase: 'COMPLETED'
 
-  #   - stage: 'Deploy'
-  #     jobs:
-  #     - job: 'Deploy1'
-  #       pool: server 
-  #       steps:
-  #       - task: ServiceNow-DevOps-Server-Change-Acceleration@1
-  #         inputs:
-  #           connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            # Upstreamjob: 'Test'
+  - stage: 'Deploy'
+    jobs:
+      - job: 'Deploy1'
+        pool: server 
+        steps:
+        - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+          inputs:
+            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+            Upstreamjob: 'Test'
 # HTML
 # Archive your static HTML project and save it with the build record.
 # Add steps that build, run tests, deploy, and more:
