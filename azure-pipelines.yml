@@ -16,10 +16,10 @@ pool:
     jobs:
     - job: 'Build1'
       steps:
-      - task: ServiceNow-DevOps-Agent-Job-Notification@1
-        inputs:
-          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-          Phase: 'STARTED'
+      # - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      #   inputs:
+      #     connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+      #     Phase: 'STARTED'
             
       # - task: Maven@3
       #   inputs:
@@ -46,10 +46,10 @@ pool:
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact: drop'
         
-      - task: ServiceNow-DevOps-Agent-Job-Notification@1
-        inputs:
-          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-          Phase: 'COMPLETED'        
+      # - task: ServiceNow-DevOps-Agent-Job-Notification@1
+      #   inputs:
+      #     connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+      #     Phase: 'COMPLETED'        
   - stage: 'Test'
     jobs:
     - job: 'Test1'
