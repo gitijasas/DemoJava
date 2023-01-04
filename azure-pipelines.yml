@@ -68,8 +68,18 @@ stages:
   - stage: 'Deploy'
     jobs:
       - job: 'Deploy1'
-        pool: server 
+        pool: DevopsAzure #server 
+        #vmImage: windows-latest
         steps:
+
+        - task: CopyFiles@2
+          displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+          inputs:
+            SourceFolder: '$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
+            Contents: '**/*.war'
+            TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+            CleanTargetFolder: true
+
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
