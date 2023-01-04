@@ -64,14 +64,10 @@ stages:
         inputs:
           connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
           Phase: 'COMPLETED'
-
-  - stage: 'Deploy'
+  - stage: 'Release'
     jobs:
-      - job: 'Deploy1'
-        pool: DevopsAzure #server 
-        #vmImage: windows-latest
-        steps:
-
+    - job: 'release1'
+      steps:
         - task: CopyFiles@2
           displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
           inputs:
@@ -80,10 +76,15 @@ stages:
             TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
             CleanTargetFolder: true
 
+  - stage: 'Deploy'
+    jobs:
+      - job: 'Deploy1'
+        pool: server 
+        steps:
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Upstreamjob: 'Test'
+            Upstreamjob: 'Release'
 # HTML
 # Archive your static HTML project and save it with the build record.
 # Add steps that build, run tests, deploy, and more:
