@@ -72,7 +72,7 @@ pool:
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Upstreamjob: 'Test'
+            # Upstreamjob: 'Test'
 # HTML
 # Archive your static HTML project and save it with the build record.
 # Add steps that build, run tests, deploy, and more:
