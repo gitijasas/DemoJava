@@ -82,9 +82,9 @@ stages:
             Contents: '**/*.war'
             TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
             CleanTargetFolder: true
-        - task: Delay@1
-          inputs:
-            delayForMinutes: '0'
+        # - task: Delay@1
+        #   inputs:
+        #     delayForMinutes: '0'
 
 
   - stage: 'Release'
