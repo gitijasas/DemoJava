@@ -68,15 +68,13 @@ stages:
   - stage: 'Deploy'
     jobs:
     - job: 'Prod'
+      dependsOn: Release1
+      condition: succeeded()
       pool: #server
         name: DevopsAzure
-        demands:
+        #demands:
         # - Agent.Version -equals 2.213.1
       steps:
-        - task: ServiceNow-DevOps-Server-Job-Notification@1
-          inputs:
-            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Phase: 'STARTED'
         - task: CopyFiles@2
           displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
           inputs:
@@ -94,19 +92,22 @@ stages:
       - job: 'Release1'
         pool: server 
         steps:
-
+        - task: ServiceNow-DevOps-Server-Job-Notification@1
+          inputs:
+            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+            Phase: 'STARTED'
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
             Upstreamjob: 'Test'
-        - task: TomcatDeployment@1
-          inputs:
-            TomcatUrl: 'http://localhost:8080'
-            Username: 'tommgr'
-            Password: 'Tom123456'
-            Warfile: '$(Build.ArtifactStagingDirectory)'
-            Context: '/'
-            ServerVersion: '7OrAbove'
+        # - task: TomcatDeployment@1
+        #   inputs:
+        #     TomcatUrl: 'http://localhost:8080'
+        #     Username: 'tommgr'
+        #     Password: 'Tom123456'
+        #     Warfile: '$(Build.ArtifactStagingDirectory)'
+        #     Context: '/'
+        #     ServerVersion: '7OrAbove'
         - task: ServiceNow-DevOps-Server-Job-Notification@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
