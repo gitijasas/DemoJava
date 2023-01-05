@@ -68,8 +68,10 @@ stages:
   - stage: 'Deploy'
     jobs:
     - job: 'Prod'
-      pool: server
-
+      pool: #server
+        name: DevopsAzure
+        demands:
+        - Agent.Version -equals 2.213.1
       steps:
         - task: ServiceNow-DevOps-Server-Job-Notification@1
           inputs:
