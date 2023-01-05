@@ -65,29 +65,6 @@ stages:
           connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
           Phase: 'COMPLETED'
 
-  - stage: 'Deploy'
-    jobs:
-    - job: 'Prod'
-
-      pool: #server
-        name: DevopsAzure
-        demands:
-        - Agent.Version -equals 2.213.1
-      # dependsOn: Release1
-      # condition: succeeded()  
-      steps:
-        - task: CopyFiles@2
-          displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
-          inputs:
-            SourceFolder: '$(Build.ArtifactStagingDirectory)'#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
-            Contents: '**/*.war'
-            TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
-            CleanTargetFolder: true
-        # - task: Delay@1
-        #   inputs:
-        #     delayForMinutes: '0'
-
-
   - stage: 'Release'
     jobs:
       - job: 'Release1'
@@ -112,8 +89,29 @@ stages:
         - task: ServiceNow-DevOps-Server-Job-Notification@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Phase: 'COMPLETED'    
+            Phase: 'COMPLETED'   
 
+  - stage: 'Deploy'
+    jobs:
+    - job: 'Prod'
+
+      pool: #server
+        name: DevopsAzure
+        demands:
+        - Agent.Version -equals 2.213.1
+      dependsOn: Release1
+      # condition: succeeded()  
+      steps:
+        - task: CopyFiles@2
+          displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+          inputs:
+            SourceFolder: '$(Build.ArtifactStagingDirectory)'#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
+            Contents: '**/*.war'
+            TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+            CleanTargetFolder: true
+        # - task: Delay@1
+        #   inputs:
+        #     delayForMinutes: '0' 
 # HTML
 # Archive your static HTML project and save it with the build record.
 # Add steps that build, run tests, deploy, and more:
