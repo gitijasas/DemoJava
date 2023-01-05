@@ -36,14 +36,14 @@ stages:
       - task: Maven@4
         displayName: 'Maven pom.xml'
 
-      # - task: CopyFiles@2
-      #   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-      #   inputs:
-      #     SourceFolder: '$(Build.SourcesDirectory)'
-      #     Contents: |
-      #       **/target/*.war
-      #       *.sql
-      #     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: |
+            **/target/*.war
+            *.sql
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifact: drop'
         
@@ -75,14 +75,16 @@ stages:
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
             Phase: 'STARTED'
-        - task: CopyFiles@2
-          displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+        # - task: CopyFiles@2
+        #   displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+        #   inputs:
+        #     SourceFolder: '$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
+        #     Contents: '**/*.war'
+        #     TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+        #     CleanTargetFolder: true
+        - task: Delay@1
           inputs:
-            SourceFolder: '$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
-            Contents: '**/*.war'
-            TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
-            CleanTargetFolder: true
-
+            delayForMinutes: '0'
   # - stage: 'Deploy'
   #   jobs:
   #     - job: 'Deploy1'
@@ -91,7 +93,7 @@ stages:
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Upstreamjob: 'Release'
+            Upstreamjob: 'Test'
         - task: ServiceNow-DevOps-Server-Job-Notification@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
