@@ -68,12 +68,13 @@ stages:
   - stage: 'Deploy'
     jobs:
     - job: 'Prod'
-      dependsOn: Release1
-      condition: succeeded()
+
       pool: #server
         name: DevopsAzure
         #demands:
         # - Agent.Version -equals 2.213.1
+      # dependsOn: Release1
+      # condition: succeeded()  
       steps:
         - task: CopyFiles@2
           displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
