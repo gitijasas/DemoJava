@@ -71,15 +71,15 @@ stages:
 
       pool: #server
         name: DevopsAzure
-        #demands:
-        # - Agent.Version -equals 2.213.1
+        demands:
+        - Agent.Version -equals 2.213.1
       # dependsOn: Release1
       # condition: succeeded()  
       steps:
         - task: CopyFiles@2
           displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
           inputs:
-            SourceFolder: '$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
+            SourceFolder: '$(Build.ArtifactStagingDirectory)'#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
             Contents: '**/*.war'
             TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
             CleanTargetFolder: true
