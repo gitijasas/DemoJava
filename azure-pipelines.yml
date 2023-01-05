@@ -64,11 +64,17 @@ stages:
         inputs:
           connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
           Phase: 'COMPLETED'
-  - stage: 'Release'
+
+  - stage: 'Deploy'
     jobs:
-    - job: 'release1'
+    - job: 'Prod'
       pool: DevopsAzure
+
       steps:
+        - task: ServiceNow-DevOps-Server-Job-Notification@1
+          inputs:
+            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+            Phase: 'STARTED'
         - task: CopyFiles@2
           displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
           inputs:
@@ -77,15 +83,20 @@ stages:
             TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
             CleanTargetFolder: true
 
-  - stage: 'Deploy'
-    jobs:
-      - job: 'Deploy1'
-        pool: server 
-        steps:
+  # - stage: 'Deploy'
+  #   jobs:
+  #     - job: 'Deploy1'
+  #       pool: server 
+  #       steps:
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
             Upstreamjob: 'Release'
+        - task: ServiceNow-DevOps-Server-Job-Notification@1
+          inputs:
+            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+            Phase: 'COMPLETED'    
+
 # HTML
 # Archive your static HTML project and save it with the build record.
 # Add steps that build, run tests, deploy, and more:
