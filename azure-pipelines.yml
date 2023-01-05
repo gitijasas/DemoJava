@@ -68,7 +68,7 @@ stages:
   - stage: 'Deploy'
     jobs:
     - job: 'Prod'
-      pool: DevopsAzure
+      pool: server
 
       steps:
         - task: ServiceNow-DevOps-Server-Job-Notification@1
