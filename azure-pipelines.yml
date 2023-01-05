@@ -90,10 +90,19 @@ stages:
   #     - job: 'Deploy1'
   #       pool: server 
   #       steps:
+
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
             Upstreamjob: 'Test'
+        - task: TomcatDeployment@1
+          inputs:
+            TomcatUrl: 'http://localhost:8080'
+            Username: 'tommgr'
+            Password: 'Tom123456'
+            Warfile: '$(Build.ArtifactStagingDirectory)'
+            Context: '/'
+            ServerVersion: '7OrAbove'
         - task: ServiceNow-DevOps-Server-Job-Notification@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
