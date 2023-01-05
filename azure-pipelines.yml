@@ -71,27 +71,29 @@ stages:
       pool: #server
         name: DevopsAzure
         demands:
-        - Agent.Version -equals 2.213.1
+        # - Agent.Version -equals 2.213.1
       steps:
         - task: ServiceNow-DevOps-Server-Job-Notification@1
           inputs:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
             Phase: 'STARTED'
-        # - task: CopyFiles@2
-        #   displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
-        #   inputs:
-        #     SourceFolder: '$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
-        #     Contents: '**/*.war'
-        #     TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
-        #     CleanTargetFolder: true
+        - task: CopyFiles@2
+          displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+          inputs:
+            SourceFolder: '$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
+            Contents: '**/*.war'
+            TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+            CleanTargetFolder: true
         - task: Delay@1
           inputs:
             delayForMinutes: '0'
-  # - stage: 'Deploy'
-  #   jobs:
-  #     - job: 'Deploy1'
-  #       pool: server 
-  #       steps:
+
+
+  - stage: 'Release'
+    jobs:
+      - job: 'Release1'
+        pool: server 
+        steps:
 
         - task: ServiceNow-DevOps-Server-Change-Acceleration@1
           inputs:
