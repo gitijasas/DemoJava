@@ -98,18 +98,19 @@ stages:
           - Agent.Version -equals 2.213.1
         # dependsOn: Approval
         # condition: succeeded()  
-        steps:
-          - task: CopyFiles@2
-            displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
-            inputs:
-              SourceFolder: '$(Build.ArtifactStagingDirectory)/drop/target' #$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target' ##'$(Build.ArtifactStagingDirectory)/_gitijasas.DemoJava/drop/target'
-              Contents: '**/*.war'
-              TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
-              CleanTargetFolder: true
+        #steps:
+          # - task: CopyFiles@2
+          #   displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
+          #   inputs:
+          #     SourceFolder: '$(Build.ArtifactStagingDirectory)/gitijasas.DemoJava/drop/target' #$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target' ##'$(Build.ArtifactStagingDirectory)/_gitijasas.DemoJava/drop/target'
+          #     Contents: '**/*.war'
+          #     TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
+          #     CleanTargetFolder: true
 
-          - script: |
-             echo "Source folder:$(Build.ArtifactStagingDirectory) and $(System.DefaultWorkingDirectory)"
-            displayName: 'Print source folder'    
+        steps:
+        - script: |
+            ls $(Build.ArtifactStagingDirectory)
+          displayName: 'Print artifacts directory contents' 
 
         # - task: Delay@1
         #   inputs:
