@@ -102,7 +102,7 @@ stages:
           - task: CopyFiles@2
             displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
             inputs:
-              SourceFolder: '$(Build.ArtifactStagingDirectory)'#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
+              SourceFolder: '$(Build.ArtifactStagingDirectory)/_AzureCoeLab-CI/drop/target'#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
               Contents: '**/*.war'
               TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
               CleanTargetFolder: true
