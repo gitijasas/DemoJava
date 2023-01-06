@@ -106,6 +106,11 @@ stages:
               Contents: '**/*.war'
               TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
               CleanTargetFolder: true
+
+          - script: |
+             echo "Source folder:$(Build.ArtifactStagingDirectory) and $(System.DefaultWorkingDirectory)"
+            displayName: 'Print source folder'    
+
         # - task: Delay@1
         #   inputs:
         #     delayForMinutes: '0' 
