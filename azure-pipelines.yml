@@ -65,9 +65,9 @@ stages:
           connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
           Phase: 'COMPLETED'
 
-  - stage: 'Release'
+  - stage: 'ChangeRequest'
     jobs:
-      - job: 'Release1'
+      - job: 'Approval'
         pool: server 
         steps:
         - task: ServiceNow-DevOps-Server-Job-Notification@1
@@ -96,15 +96,15 @@ stages:
           name: DevopsAzure
           demands:
           - Agent.Version -equals 2.213.1
-        dependsOn: Release1
-        # condition: succeeded()  
+        dependsOn: Approval
+        condition: succeeded()  
         steps:
           - task: CopyFiles@2
-            displayName: 'Copy Files to: /opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+            displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
             inputs:
               SourceFolder: '$(Build.ArtifactStagingDirectory)'#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
               Contents: '**/*.war'
-              TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+              TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
               CleanTargetFolder: true
         # - task: Delay@1
         #   inputs:
