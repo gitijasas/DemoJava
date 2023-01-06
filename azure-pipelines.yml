@@ -65,7 +65,7 @@ stages:
   #         connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
   #         Phase: 'COMPLETED'
 
-  - stage: 'Release Deploy'
+  - stage: 'Deploy'
     jobs:
       - job: 'ChangeRequest'
         pool: server 
@@ -91,7 +91,7 @@ stages:
             connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
             Phase: 'COMPLETED'   
 
-      - job: 'Prod'
+      - job: 'ProdDeploy'
         pool: #server
           name: DevopsAzure
           demands:
