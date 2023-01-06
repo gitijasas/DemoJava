@@ -13,44 +13,44 @@ pool:
   demands: maven
 
 stages:
-  - stage: 'Build'
-    jobs:
-    - job: 'Build1'
-      steps:
-      - task: ServiceNow-DevOps-Agent-Job-Notification@1
-        inputs:
-          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-          Phase: 'STARTED'
+  # - stage: 'Build'
+  #   jobs:
+  #   - job: 'Build1'
+  #     steps:
+  #     - task: ServiceNow-DevOps-Agent-Job-Notification@1
+  #       inputs:
+  #         connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+  #         Phase: 'STARTED'
             
-      # - task: Maven@3
-      #   inputs:
-      #     mavenPomFile: 'pom.xml'
-      #     mavenOptions: '-Xmx3072m'
-      #     javaHomeOption: 'JDKVersion'
-      #     jdkVersionOption: '1.8'
-      #     jdkArchitectureOption: 'x64'
-      #     publishJUnitResults: true
-      #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      #     goals: 'package'
+  #     # - task: Maven@3
+  #     #   inputs:
+  #     #     mavenPomFile: 'pom.xml'
+  #     #     mavenOptions: '-Xmx3072m'
+  #     #     javaHomeOption: 'JDKVersion'
+  #     #     jdkVersionOption: '1.8'
+  #     #     jdkArchitectureOption: 'x64'
+  #     #     publishJUnitResults: true
+  #     #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+  #     #     goals: 'package'
 
-      - task: Maven@4
-        displayName: 'Maven pom.xml'
+  #     - task: Maven@4
+  #       displayName: 'Maven pom.xml'
 
-      - task: CopyFiles@2
-        displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-        inputs:
-          SourceFolder: '$(Build.SourcesDirectory)'
-          Contents: |
-            **/target/*.war
-            *.sql
-          TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifact: drop'
+  #     - task: CopyFiles@2
+  #       displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  #       inputs:
+  #         SourceFolder: '$(Build.SourcesDirectory)'
+  #         Contents: |
+  #           **/target/*.war
+  #           *.sql
+  #         TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  #     - task: PublishBuildArtifacts@1
+  #       displayName: 'Publish Artifact: drop'
         
-      - task: ServiceNow-DevOps-Agent-Job-Notification@1
-        inputs:
-          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-          Phase: 'COMPLETED'        
+  #     - task: ServiceNow-DevOps-Agent-Job-Notification@1
+  #       inputs:
+  #         connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+  #         Phase: 'COMPLETED'        
   # - stage: 'Test'
   #   jobs:
   #   - job: 'Test1'
@@ -111,7 +111,7 @@ stages:
 
         - script: |
         
-            find $(Build.artifactstagingdirectory) -type f
+            find $(Build.artifactstagingdirectory)"" -type f
           displayName: 'Print files in artifacts directory'
 
         # - script: |
