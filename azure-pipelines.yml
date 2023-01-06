@@ -51,58 +51,58 @@ stages:
         inputs:
           connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
           Phase: 'COMPLETED'        
-  - stage: 'Test'
-    jobs:
-    - job: 'Test1'
-      steps:
-      - task: ServiceNow-DevOps-Agent-Job-Notification@1
-        inputs:
-          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-          Phase: 'STARTED'
+  # - stage: 'Test'
+  #   jobs:
+  #   - job: 'Test1'
+  #     steps:
+  #     - task: ServiceNow-DevOps-Agent-Job-Notification@1
+  #       inputs:
+  #         connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+  #         Phase: 'STARTED'
 
-      - task: ServiceNow-DevOps-Agent-Job-Notification@1
-        inputs:
-          connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-          Phase: 'COMPLETED'
+  #     - task: ServiceNow-DevOps-Agent-Job-Notification@1
+  #       inputs:
+  #         connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+  #         Phase: 'COMPLETED'
 
   - stage: 'ChangeRequest'
     jobs:
-      - job: 'Approval'
-        pool: server 
-        steps:
-        - task: ServiceNow-DevOps-Server-Job-Notification@1
-          inputs:
-            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Phase: 'STARTED'
-        - task: ServiceNow-DevOps-Server-Change-Acceleration@1
-          inputs:
-            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Upstreamjob: 'Test'
-        # - task: TomcatDeployment@1
-        #   inputs:
-        #     TomcatUrl: 'http://localhost:8080'
-        #     Username: 'tommgr'
-        #     Password: 'Tom123456'
-        #     Warfile: '$(Build.ArtifactStagingDirectory)'
-        #     Context: '/'
-        #     ServerVersion: '7OrAbove'
-        - task: ServiceNow-DevOps-Server-Job-Notification@1
-          inputs:
-            connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
-            Phase: 'COMPLETED'   
+      # - job: 'Approval'
+      #   pool: server 
+      #   steps:
+      #   - task: ServiceNow-DevOps-Server-Job-Notification@1
+      #     inputs:
+      #       connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+      #       Phase: 'STARTED'
+      #   - task: ServiceNow-DevOps-Server-Change-Acceleration@1
+      #     inputs:
+      #       connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+      #       Upstreamjob: 'Test'
+      #   # - task: TomcatDeployment@1
+      #   #   inputs:
+      #   #     TomcatUrl: 'http://localhost:8080'
+      #   #     Username: 'tommgr'
+      #   #     Password: 'Tom123456'
+      #   #     Warfile: '$(Build.ArtifactStagingDirectory)'
+      #   #     Context: '/'
+      #   #     ServerVersion: '7OrAbove'
+      #   - task: ServiceNow-DevOps-Server-Job-Notification@1
+      #     inputs:
+      #       connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
+      #       Phase: 'COMPLETED'   
       - job: 'Prod'
 
         pool: #server
           name: DevopsAzure
           demands:
           - Agent.Version -equals 2.213.1
-        dependsOn: Approval
-        condition: succeeded()  
+        # dependsOn: Approval
+        # condition: succeeded()  
         steps:
           - task: CopyFiles@2
             displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
             inputs:
-              SourceFolder: '$(Build.ArtifactStagingDirectory)/_gitijasas.DemoJava/drop/target'#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target'
+              SourceFolder: $(Build.ArtifactStagingDirectory)#$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target' ##'$(Build.ArtifactStagingDirectory)/_gitijasas.DemoJava/drop/target'
               Contents: '**/*.war'
               TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
               CleanTargetFolder: true
