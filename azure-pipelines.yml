@@ -90,22 +90,26 @@ stages:
       #     inputs:
       #       connectedServiceName: 'wiprocoelabdev-AzureCoeLab-ServiceNow DevOps Service Connection'
       #       Phase: 'COMPLETED'   
-      - job: 'Prod'
 
+      - job: 'Prod'
         pool: #server
           name: DevopsAzure
           demands:
           - Agent.Version -equals 2.213.1
-        # dependsOn: Approval
-        # condition: succeeded()  
+        dependsOn: Approval
+        condition: succeeded()  
         steps:
           - task: CopyFiles@2
             displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
             inputs:
-              SourceFolder:  '$(Build.ArtifactStagingDirectory)' #'$(Build.ArtifactStagingDirectory)gitijasas.DemoJava/drop/target' #$(System.DefaultWorkingDirectory)/_AzureCoeLab-CI/drop/target' ##'$(Build.ArtifactStagingDirectory)/_gitijasas.DemoJava/drop/target'
+              SourceFolder: '$(Build.ArtifactStagingDirectory)'
               Contents: '**/*.war'
-              TargetFolder: 'opt/apache-tomcat-10.0.27/webapps/DevopsJava'
+              TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
               #CleanTargetFolder: true
+              OverWrite: true
+              
+              
+
         # - task: Delay@1
         #   inputs:
         #     delayForMinutes: '0' 
