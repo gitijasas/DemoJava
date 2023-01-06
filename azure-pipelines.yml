@@ -109,8 +109,9 @@ stages:
               TargetFolder: 'C:\apache-tomcat-10.0.27\webapps\test'  #'/apache-tomcat-10.0.27/webapps/DevopsJava'
               CleanTargetFolder: true
               OverWrite: true
+              
           - script: |
-              scp.exe $(artifactPath) 'AZN-SNICOE-DW03':C:\
+              scp.exe $(artifactPath) '10.239.8.71':C:\
           # - task: CopyFiles@2
           #   inputs:
           #     SourceFolder: '$(Build.SourcesDirectory)'
