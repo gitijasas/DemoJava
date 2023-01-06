@@ -99,15 +99,20 @@ stages:
         dependsOn: Approval
         condition: succeeded()  
         steps:
+          # - task: CopyFiles@2
+          #   displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
+          #   inputs:
+          #     SourceFolder: '$(Build.ArtifactStagingDirectory)'
+          #     Contents: '**/*.war'
+          #     TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
+          #     CleanTargetFolder: true
+          #     #OverWrite: true
+
           - task: CopyFiles@2
-            displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
             inputs:
               SourceFolder: '$(Build.ArtifactStagingDirectory)'
               Contents: '**/*.war'
-              TargetFolder: '/opt/apache-tomcat-10.0.27/webapps/DevopsJava'
-              #CleanTargetFolder: true
-              OverWrite: true
-              
+              TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
               
 
         # - task: Delay@1
