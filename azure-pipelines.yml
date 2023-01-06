@@ -108,9 +108,14 @@ stages:
           #     CleanTargetFolder: true
 
         steps:
+
         - script: |
-            ls $(Build.ArtifactStagingDirectory)
-          displayName: 'Print artifacts directory contents' 
+            find $(build.artifactstagingdirectory) -type f
+          displayName: 'Print files in artifacts directory'
+
+        - script: |
+            find $(build.artifactstagingdirectory) -type d
+          displayName: 'Print directories in artifacts directory'
 
         # - task: Delay@1
         #   inputs:
