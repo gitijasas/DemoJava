@@ -111,7 +111,7 @@ stages:
 
         - script: |
         
-            find $(Build.artifactstagingdirectory)"" #-type f
+            find $(Build.artifactstagingdirectory)"" 
           displayName: 'Print files in artifacts directory'
 
         # - script: |
