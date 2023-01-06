@@ -110,7 +110,7 @@ stages:
 
           - task: CopyFiles@2
             inputs:
-              SourceFolder: '$(Build.ArtifactStagingDirectory)'
+              SourceFolder: '$(Build.SourcesDirectory)'
               Contents: '**/*.war'
               TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
               
