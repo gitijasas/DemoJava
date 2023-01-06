@@ -92,27 +92,30 @@ stages:
       #       Phase: 'COMPLETED'   
 
       - job: 'Prod'
-        pool: #server
-          name: DevopsAzure
-          demands:
-          - Agent.Version -equals 2.213.1
+        # pool: #server
+        #   name: DevopsAzure
+        #   demands:
+        #   - Agent.Version -equals 2.213.1
+        pool:
+          vmImage: 'windows-latest'
         dependsOn: Approval
         condition: succeeded()  
         steps:
+          - task: CopyFiles@2
+            displayName: 'Copy WAR file Tomcat Server'
+            inputs:
+              SourceFolder: '$(Build.ArtifactStagingDirectory)'
+              Contents: '**/*.war'
+              TargetFolder: 'C:\apache-tomcat-10.0.27\webapps\test'  #'/apache-tomcat-10.0.27/webapps/DevopsJava'
+              CleanTargetFolder: true
+              OverWrite: true
+          - script: |
+              scp.exe $(artifactPath) 'AZN-SNICOE-DW03':C:\
           # - task: CopyFiles@2
-          #   displayName: 'Copy Files to: /apache-tomcat-10.0.27/webapps/DevopsJava'
           #   inputs:
-          #     SourceFolder: '$(Build.ArtifactStagingDirectory)'
+          #     SourceFolder: '$(Build.SourcesDirectory)'
           #     Contents: '**/*.war'
           #     TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
-          #     CleanTargetFolder: true
-          #     #OverWrite: true
-
-          - task: CopyFiles@2
-            inputs:
-              SourceFolder: '$(Build.SourcesDirectory)'
-              Contents: '**/*.war'
-              TargetFolder: '/apache-tomcat-10.0.27/webapps/DevopsJava'
               
 
         # - task: Delay@1
